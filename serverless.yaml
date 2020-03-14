@@ -1,0 +1,30 @@
+service: aws-cost-report
+
+provider:
+  name: aws
+  runtime: go1.x
+  stage: ${opt:stage, 'development'}
+  region: ${opt:region, 'ap-northeast-2'}
+  logRetentionInDays: 30
+  versionFunctions: false
+  timeout: 20
+  memorySize: 128
+  iamRoleStatements:
+    - Effect: 'Allow'
+      Action:
+        - ce:*
+      Resource: '*'
+  environment:
+    TZ: Asia/Seoul
+    NODE_ENV: ${opt:stage, 'development'}
+
+functions:
+  report:
+    handler: bin/report
+    memorySize: 192
+    environment:
+      TELEGRAM_BOT_TOKEN: ${file(./config.${self:provider.stage}.json):TELEGRAM_BOT_TOKEN}
+      TELEGRAM_BOT_CHAT_ID: ${file(./config.${self:provider.stage}.json):TELEGRAM_BOT_CHAT_ID}
+    events:
+      - schedule:
+         rate: cron(0 1 * * ? *)

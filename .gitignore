@@ -13,3 +13,19 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+
+# serverless
+admin.env
+.env
+_meta
+.serverless
+
+# Env
+config.*.json
+
+#OS STUFF
+.DS_Store
+.tmp
+
+# Runtime data
+bin
