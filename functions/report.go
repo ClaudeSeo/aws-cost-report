@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 
@@ -52,14 +53,18 @@ func getCostReport(startDate string, endDate string) string {
 	}
 
 	var report string
+	total := 0.0
 	for _, result := range resp.ResultsByTime {
 		for _, v := range result.Groups {
 			service := strings.Join(v.Keys[:], ", ")
 			amount := *v.Metrics["UnblendedCost"].Amount
+			pAmount, _ := strconv.ParseFloat(amount, 64)
+			total += pAmount
 			report += fmt.Sprintf("%s\n$%s\n\n", service, amount)
 		}
 	}
 
+	report += fmt.Sprintf("Total\n$%f\n", total)
 	return report
 }
 
