@@ -21,7 +21,7 @@ provider:
 functions:
   report:
     handler: bin/report
-    memorySize: 192
+    memorySize: 128
     environment:
       TELEGRAM_BOT_TOKEN: ${file(./config.${self:provider.stage}.json):TELEGRAM_BOT_TOKEN}
       TELEGRAM_BOT_CHAT_ID: ${file(./config.${self:provider.stage}.json):TELEGRAM_BOT_CHAT_ID}
